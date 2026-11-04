@@ -1,6 +1,7 @@
 
 import streamlit as st
 import requests
+import os
 
 st.set_page_config(
     page_title="Customer Churn Prediction",
@@ -8,7 +9,7 @@ st.set_page_config(
     layout="wide"
 )
 
-API_URL = "http://127.0.0.1:8000/predict"
+API_URL = os.getenv("API_URL", "http://127.0.0.1:8000") + "/predict"
 
 st.title("Customer Churn Prediction")
 st.write("Predict whether a customer is likely to leave the company.")
