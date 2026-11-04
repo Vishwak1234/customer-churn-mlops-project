@@ -1,0 +1,70 @@
+schema: '2.0'
+stages:
+  preprocess:
+    cmd: python -m src.data.preprocess
+    deps:
+    - path: data/raw/dataset.csv
+      hash: md5
+      md5: 1b444f659f61c1ba5f1be4b8cd957fda
+      size: 977501
+    - path: src/data/preprocess.py
+      hash: md5
+      md5: 02d40b66f6fff38759add72bec2fc12c
+      size: 2747
+    outs:
+    - path: data/processed/test.csv
+      hash: md5
+      md5: ac020a37d10b95fa0d00b6d748866378
+      size: 178930
+    - path: data/processed/train.csv
+      hash: md5
+      md5: fe26dee9f314acb62fa4c23bbf38009a
+      size: 713846
+  train:
+    cmd: python -m src.models.train
+    deps:
+    - path: data/processed/test.csv
+      hash: md5
+      md5: ac020a37d10b95fa0d00b6d748866378
+      size: 178930
+    - path: data/processed/train.csv
+      hash: md5
+      md5: fe26dee9f314acb62fa4c23bbf38009a
+      size: 713846
+    - path: src/features/build_features.py
+      hash: md5
+      md5: 36c5b247d0e1174a823e6282ed726a80
+      size: 996
+    - path: src/models/train.py
+      hash: md5
+      md5: 8f969f5581f94d033da6f04a3ae5cfd3
+      size: 4789
+    outs:
+    - path: artifacts/model/model.joblib
+      hash: md5
+      md5: 2f0675761611497d266495d054fbe30d
+      size: 8474
+    - path: artifacts/model/model_comparison.csv
+      hash: md5
+      md5: a1986ab655139957c579a5bdb910cba3
+      size: 387
+  evaluate:
+    cmd: python -m src.models.evaluate
+    deps:
+    - path: artifacts/model/model.joblib
+      hash: md5
+      md5: 2f0675761611497d266495d054fbe30d
+      size: 8474
+    - path: data/processed/test.csv
+      hash: md5
+      md5: ac020a37d10b95fa0d00b6d748866378
+      size: 178930
+    - path: src/models/evaluate.py
+      hash: md5
+      md5: cab6b0bf993c367e3d77614060fffae0
+      size: 2057
+    outs:
+    - path: artifacts/model/metrics.json
+      hash: md5
+      md5: 6c748768e6f41800022dd0ab41be6909
+      size: 185
