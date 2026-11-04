@@ -1,0 +1,31 @@
+
+stages:
+
+  preprocess:
+    cmd: python -m src.data.preprocess
+    deps:
+      - data/raw/dataset.csv
+      - src/data/preprocess.py
+    outs:
+      - data/processed/train.csv
+      - data/processed/test.csv
+
+  train:
+    cmd: python -m src.models.train
+    deps:
+      - data/processed/train.csv
+      - data/processed/test.csv
+      - src/models/train.py
+      - src/features/build_features.py
+    outs:
+      - artifacts/model/model.joblib
+      - artifacts/model/model_comparison.csv
+
+  evaluate:
+    cmd: python -m src.models.evaluate
+    deps:
+      - artifacts/model/model.joblib
+      - data/processed/test.csv
+      - src/models/evaluate.py
+    metrics:
+      - artifacts/model/metrics.json

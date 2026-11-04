@@ -2,13 +2,13 @@
 __pycache__/
 *.pyc
 .env
-
 mlruns/
 mlflow.db
 mlartifacts/
-
 logs/
 .pytest_cache/
 
 data/processed/
-data/raw/
+
+data/raw/*
+!data/raw/*.dvc
